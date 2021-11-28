@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package questions;
+option go_package = "github.com/ishan2790/go-grpc-orm-eg;go_grpc_orm_eg";
+
+message Opt {
+	uint32 id = 1;
+	string name = 2;
+	string flag = 3;
+}
+
+enum Type {
+	SINGLE_CHOICE = 0;
+	MULTIPLE_CHOICE = 1;
+}
+
+message AddQuestionRequest {
+    string name = 1;
+	string category = 2;
+	string subcategory = 3;
+	string difficulty = 4;
+	Type type = 5;
+	repeated Opt options = 6;
+}
+
+message AddQuestionResponse {
+    uint64 id = 1;
+}
+
+message GetQuestionRequest {
+	uint64 id = 1;
+}
+
+message GetQuestionResponse {
+    uint64 id = 1;
+    string name = 2;
+	string category = 3;
+	string subcategory = 4;
+	string difficulty = 5;
+	Type type = 6;
+	repeated Opt options = 7;	
+}
+
+message GetAllQuestionResponse {
+	repeated GetQuestionResponse questionlist = 1;
+}
+
+message Empty {
+}
+
+service QuestionService {
+    rpc Add(AddQuestionRequest) returns (AddQuestionResponse) {};
+	rpc Get(GetQuestionRequest) returns (GetQuestionResponse) {};
+	rpc GetAll(Empty) returns (GetAllQuestionResponse) {};
+}
