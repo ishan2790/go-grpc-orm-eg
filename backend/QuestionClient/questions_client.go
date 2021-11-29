@@ -3,9 +3,8 @@ package main
 import (
 	"context"
 	"log"
-	"net"
-
-	pb "github.com/ishan2790/go-grpc-orm-eg/backend"
+	"time"
+	pb "github.com/ishan2790/go-grpc-orm-eg/backend/questions"
 	"google.golang.org/grpc"
 )
 
@@ -15,7 +14,7 @@ const (
 )
 
 func main() {
-	conn, err := grpc.Dial(address, grpc.WithInsecure, grpc.WithBlock())
+	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 
 	if err != nil {
 		log.Fatalf("did not connect %v",err)
@@ -23,17 +22,16 @@ func main() {
 
 	defer conn.Close()
 
-	c := pb.GetUserClient(conn)
+	c := pb.NewQuestionServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := c.Get(ctx, &pb.GetQuestionRequest{Id: 1})
+	r, err := c.GetAll(ctx, &pb.Empty{})
 
 	if err != nil {
 		log.Fatalf("Did not get  : %v", err)
 	}
 
-	log.Printf(`Question:
-	Name:%s`, r.GetName())
+	log.Printf("%v",r)
 }

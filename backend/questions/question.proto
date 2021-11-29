@@ -6,7 +6,7 @@ option go_package = "github.com/ishan2790/go-grpc-orm-eg;go_grpc_orm_eg";
 message Opt {
 	uint32 id = 1;
 	string name = 2;
-	string flag = 3;
+	bool flag = 3;
 }
 
 enum Type {
@@ -14,11 +14,19 @@ enum Type {
 	MULTIPLE_CHOICE = 1;
 }
 
+
+enum Difficulty {
+	EASY = 0;
+	MEDIUM = 1;
+	HARD = 2;
+	EXTREMELY_HARD = 3;
+}
+
 message AddQuestionRequest {
     string name = 1;
 	string category = 2;
 	string subcategory = 3;
-	string difficulty = 4;
+	Difficulty difficulty = 4;
 	Type type = 5;
 	repeated Opt options = 6;
 }
@@ -36,7 +44,7 @@ message GetQuestionResponse {
     string name = 2;
 	string category = 3;
 	string subcategory = 4;
-	string difficulty = 5;
+	Difficulty difficulty = 5;
 	Type type = 6;
 	repeated Opt options = 7;	
 }
